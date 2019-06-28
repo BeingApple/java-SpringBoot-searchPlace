@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
+
 @RestController
 @AllArgsConstructor
 public class WebRestController {
@@ -19,8 +21,12 @@ public class WebRestController {
         return "HelloWorld";
     }
 
-    @PostMapping("join")
+    @PostMapping("/join")
     public void saveMember(@RequestBody MemberSaveRequestDTO dto){
-        memberRepository.save(dto.toEntity());
+        try {
+            memberRepository.save(dto.toEntity());
+        }catch (NoSuchAlgorithmException exception){
+            exception.printStackTrace();
+        }
     }
 }
