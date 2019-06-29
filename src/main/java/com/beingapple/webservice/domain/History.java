@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class History {
+public class History extends BaseTimeEntity{
     @Id
     @GeneratedValue
     private Long id;

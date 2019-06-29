@@ -10,21 +10,22 @@ import java.security.NoSuchAlgorithmException;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MemberSaveRequestDTO{
+public class MemberRequestDTO {
+
     private String userId;
     private String userPassword;
     private String salt;
 
-    private String encryptPassword() throws NoSuchAlgorithmException {
-        this.salt = SHA256Util.generateSalt();
-
+    private String encryptPassword(String salt) throws NoSuchAlgorithmException {
         return SHA256Util.getEncrypted(userPassword, salt);
     }
 
-    public Member toEntity() throws NoSuchAlgorithmException{
+    public Member toSaveEntity() throws NoSuchAlgorithmException{
+        salt = SHA256Util.generateSalt();
+
         return Member.builder()
                 .userId(userId)
-                .userPassword(encryptPassword())
+                .userPassword(encryptPassword(salt))
                 .salt(salt)
                 .build();
     }

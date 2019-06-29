@@ -2,3 +2,7 @@ spring:
   h2:
     console:
       enabled: true
+Kakao:
+  api:
+    url: https://dapi.kakao.com
+    key: KakaoAK 540d3097b14050f7e915581474339b2b

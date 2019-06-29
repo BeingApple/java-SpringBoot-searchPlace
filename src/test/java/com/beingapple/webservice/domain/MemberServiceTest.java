@@ -3,6 +3,8 @@ package com.beingapple.webservice.domain;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import com.beingapple.webservice.repository.MemberRepository;
+import com.beingapple.webservice.service.MemberService;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,13 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
+import java.security.NoSuchAlgorithmException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MemberRepositoryTest {
+public class MemberServiceTest {
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    MemberService memberService;
 
     @After
     public void cleanup(){
@@ -24,21 +29,17 @@ public class MemberRepositoryTest {
     }
 
     @Test
-    public void memberSaveAndGet(){
-        /*
-        //
-        memberRepository.save(Member.builder()
-                .userId("beingapple")
-                .userPassword("beingapple123")
-                .build());
+    public void memberJoinAndLogin() throws NoSuchAlgorithmException{
+        //given
+        MemberRequestDTO memberDTO = new MemberRequestDTO();
+        memberDTO.setUserId("beingapple");
+        memberDTO.setUserPassword("beingapple123");
+        memberService.saveMember(memberDTO);
 
         //when
-        List<Member> memberList = memberRepository.findAll();
+        Member member = memberService.login(memberDTO);
 
         //then
-        Member member = memberList.get(0);
         assertThat(member.getUserId(), is("beingapple"));
-        assertThat(member.getUserPassword(), is("beingapple123"));
-         */
     }
 }
