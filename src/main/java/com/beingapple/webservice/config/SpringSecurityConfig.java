@@ -35,8 +35,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private ObjectMapper objectMapper;
 
-    private static final String LOGIN_ENTRY_POINT = "/member/login";
-    private static final String JOIN_ENTRY_POINT = "/member/join";
+    private static final String LOGIN_ENTRY_POINT = "/login";
+    private static final String JOIN_ENTRY_POINT = "/join";
     private static final String ERROR_ENTRY_POINT = "/error";
 
 
@@ -47,6 +47,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth){
+        ajaxProvider.setForcePrincipalAsString(true);
+
         auth.authenticationProvider(ajaxProvider)
                 .authenticationProvider(jwtProvider);
     }

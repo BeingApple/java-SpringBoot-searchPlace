@@ -41,10 +41,6 @@ public class JwtUtil {
         }
     }
 
-    public static String refreshToken(UserDetails userDetails) {
-        return createToken(userDetails, DateUtil.nowAfterDaysToDate(JwtInfo.EXPIRES_LIMIT));
-    }
-
     public static DecodedJWT tokenToJwt(String token) {
         try {
             return JWT.decode(token);

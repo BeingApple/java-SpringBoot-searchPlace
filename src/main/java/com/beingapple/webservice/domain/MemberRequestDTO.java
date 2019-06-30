@@ -12,7 +12,7 @@ public class MemberRequestDTO {
     private String userPassword;
     private String role;
 
-    public Member toSaveEntity(){
+    public Member toEntity(){
         return Member.builder()
                 .userId(userId)
                 .userPassword(userPassword)

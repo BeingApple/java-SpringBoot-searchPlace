@@ -22,13 +22,9 @@ public class History extends BaseTimeEntity{
     @Column(length = 200, nullable = false)
     private String keyword;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date searchDate;
-
     @Builder
     public History(Long memberId, String keyword, Date searchDate){
         this.memberId = memberId;
         this.keyword = keyword;
-        this.searchDate = searchDate;
     }
 }

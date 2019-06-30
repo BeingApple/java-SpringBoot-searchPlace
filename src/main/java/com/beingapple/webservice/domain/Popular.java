@@ -21,13 +21,23 @@ public class Popular extends BaseTimeEntity{
     @Column(length = 200, nullable = false)
     private String keyword;
 
-    @Column
-    private int count;
+    @Column(nullable = false)
+    private Integer count;
 
     @Builder
-    public Popular(String keyword, int count){
+    public Popular(Long id, String keyword, Integer count){
+        this.id = id;
         this.keyword = keyword;
         this.count = count;
+    }
+
+    public PopularRequestDTO getModifyDto(){
+        PopularRequestDTO dto = new PopularRequestDTO();
+        dto.setId(id);
+        dto.setKeyword(keyword);
+        dto.setCount(count);
+
+        return dto;
     }
 
 }

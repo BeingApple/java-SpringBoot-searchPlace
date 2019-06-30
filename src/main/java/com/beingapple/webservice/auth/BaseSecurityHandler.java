@@ -1,6 +1,6 @@
 package com.beingapple.webservice.auth;
 
-import com.beingapple.webservice.auth.jwt.JwtInfo;
+import com.beingapple.webservice.domain.Response;
 import com.beingapple.webservice.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -12,15 +12,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 @Slf4j
@@ -31,14 +28,14 @@ public class BaseSecurityHandler implements AuthenticationSuccessHandler, Authen
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         String accessToken = JwtUtil.createToken(userDetails);
-        Map<String, Object> responseData = new HashMap<>();
-
-        responseData.put("access_token", accessToken);
-
-        ObjectMapper objectMapper = new ObjectMapper();
+        Response responseData = new Response(
+                HttpStatus.OK.toString(),
+                accessToken,
+                "", ""
+        );
 
         PrintWriter out = response.getWriter();
-        out.print(objectMapper.writeValueAsString(responseData));
+        out.print(new ObjectMapper().writeValueAsString(responseData));
         out.flush();
     }
 

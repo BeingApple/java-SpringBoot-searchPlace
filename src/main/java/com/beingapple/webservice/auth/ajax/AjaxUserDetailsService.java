@@ -22,7 +22,6 @@ public class AjaxUserDetailsService implements UserDetailsService {
         if (member == null) {
             throw new UsernameNotFoundException(username + "라는 사용자가 없습니다.");
         }
-
         return new UserDetailsImpl(member, AuthorityUtils.createAuthorityList(member.getRole()));
     }
 }

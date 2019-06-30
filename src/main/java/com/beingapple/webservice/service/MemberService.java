@@ -3,8 +3,9 @@ package com.beingapple.webservice.service;
 import com.beingapple.webservice.domain.Member;
 import com.beingapple.webservice.domain.MemberRequestDTO;
 
-import java.security.NoSuchAlgorithmException;
 
 public interface MemberService {
+    boolean isExistMember(MemberRequestDTO dto);
     void saveMember(MemberRequestDTO dto);
+    Member authenticationMember();
 }

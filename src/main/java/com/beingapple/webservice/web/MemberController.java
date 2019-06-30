@@ -19,11 +19,21 @@ public class MemberController {
     private MemberService memberService;
     private PasswordEncoder passwordEncoder;
 
-    @PostMapping("/member/join")
+    @PostMapping("/join")
     public ResponseEntity<Response> saveMember(@RequestBody MemberRequestDTO dto){
-        dto.setUserPassword(passwordEncoder.encode(dto.getUserPassword()));
-        memberService.saveMember(dto);
+        if(!memberService.isExistMember(dto)) {
+            dto.setUserPassword(passwordEncoder.encode(dto.getUserPassword()));
+            memberService.saveMember(dto);
 
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+            return new ResponseEntity<>(null, HttpStatus.CREATED);
+        }else{
+            Response response = new Response(
+                    HttpStatus.CONFLICT.toString(),
+                    "",
+                    "EMAIL",
+                    "중복된 유저 아이디입니다.");
+
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        }
     }
 }

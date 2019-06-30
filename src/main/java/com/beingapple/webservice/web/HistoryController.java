@@ -1,13 +1,12 @@
 package com.beingapple.webservice.web;
 
+import com.beingapple.webservice.domain.History;
 import com.beingapple.webservice.domain.Member;
 import com.beingapple.webservice.domain.Response;
-import com.beingapple.webservice.domain.Search;
 import com.beingapple.webservice.service.HistoryService;
 import com.beingapple.webservice.service.MemberService;
-import com.beingapple.webservice.service.PopularService;
-import com.beingapple.webservice.service.SearchService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,24 +19,19 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @AllArgsConstructor
-public class SearchController {
-    private SearchService searchService;
+public class HistoryController {
     private MemberService memberService;
-    private HistoryService historyService;
-    private PopularService popularService;
+    HistoryService historyService;
 
-    @GetMapping("/search/place")
-    public ResponseEntity<?> searchPlace(@RequestParam("keyword") String keyword,
-                                              @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size){
+    @GetMapping("/history")
+    public ResponseEntity<?> getHistory(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                                           @RequestParam(value = "size", required = false, defaultValue = "15") Integer size){
         Member member = memberService.authenticationMember();
 
         if(member != null) {
-            Search search = searchService.findByKeyword(keyword, page, size);
+            Page<History> historyList = historyService.getHistory(member.getId(), page, size);
 
-            historyService.saveHistory(member.getId(), keyword);
-            popularService.savePopularKeyword(keyword);
-
-            return new ResponseEntity<>(search, HttpStatus.OK);
+            return new ResponseEntity<>(historyList, HttpStatus.OK);
         }else{
             Response response = new Response(
                     HttpStatus.UNAUTHORIZED.toString(),
@@ -46,10 +40,5 @@ public class SearchController {
             );
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
-    }
-
-    @GetMapping("/search/popular")
-    public ResponseEntity<List> getPopular(){
-        return new ResponseEntity<>(popularService.getPopular(), HttpStatus.OK);
     }
 }
