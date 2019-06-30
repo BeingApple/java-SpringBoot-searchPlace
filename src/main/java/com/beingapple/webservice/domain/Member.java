@@ -24,13 +24,13 @@ public class Member extends BaseTimeEntity{
     @Column(length=  256, nullable = false)
     private String userPassword;
 
-    @Column(length = 16, nullable = false)
-    private String salt;
+    @Column(length = 10, nullable = false)
+    private String role;
 
     @Builder
-    public Member(String userId, String userPassword, String salt){
+    public Member(String userId, String userPassword, String salt, String role){
         this.userId = userId;
         this.userPassword = userPassword;
-        this.salt = salt;
+        this.role = role;
     }
 }

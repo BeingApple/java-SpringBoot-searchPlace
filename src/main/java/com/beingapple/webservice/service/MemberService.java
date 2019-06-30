@@ -6,6 +6,5 @@ import com.beingapple.webservice.domain.MemberRequestDTO;
 import java.security.NoSuchAlgorithmException;
 
 public interface MemberService {
-    void saveMember(MemberRequestDTO dto) throws NoSuchAlgorithmException;
-    Member login(MemberRequestDTO dto) throws NoSuchAlgorithmException;
+    void saveMember(MemberRequestDTO dto);
 }

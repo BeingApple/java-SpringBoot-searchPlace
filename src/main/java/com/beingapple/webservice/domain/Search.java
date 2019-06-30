@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class Place {
+public class Search {
     private Meta meta;
     private List<Document> documents;
 
