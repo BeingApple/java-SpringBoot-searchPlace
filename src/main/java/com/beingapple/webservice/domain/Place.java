@@ -1,6 +1,8 @@
 package com.beingapple.webservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -19,7 +21,18 @@ public class Place {
     public static class Meta{
         private Integer total_count;
         private Integer pageable_count;
+        @JsonProperty(value="is_end")
         private boolean is_end;
+        private SameName same_name;
+    }
+
+    @Getter
+    @Setter
+    @ToString
+    public static class SameName{
+        private List<String> region;
+        private String keyword;
+        private String selected_region;
     }
 
     @Getter

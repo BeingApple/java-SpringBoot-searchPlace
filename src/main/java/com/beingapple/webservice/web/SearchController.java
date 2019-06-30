@@ -15,8 +15,9 @@ public class SearchController {
     PlaceService placeService;
 
     @GetMapping("/place")
-    public ResponseEntity<Place> searchPlace(@RequestParam("keyword") String keyword){
-        Place place = placeService.findByKeyword(keyword);
+    public ResponseEntity<Place> searchPlace(@RequestParam("keyword") String keyword,
+                                             @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size){
+        Place place = placeService.findByKeyword(keyword, page, size);
 
         return new ResponseEntity<>(place, HttpStatus.OK);
     }

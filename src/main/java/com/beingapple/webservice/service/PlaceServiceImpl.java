@@ -17,7 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.nio.charset.StandardCharsets;
 
-@Slf4j
 @Service
 public class PlaceServiceImpl implements PlaceService{
     private final RestTemplate restTemplate;
@@ -36,9 +35,11 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public Place findByKeyword(String keyword) {
+    public Place findByKeyword(String keyword, Integer page, Integer size) {
         UriComponents builder = UriComponentsBuilder.fromHttpUrl(kakaoApiUrl+"/v2/local/search/keyword.json")
                 .queryParam("query", keyword)
+                .queryParam("page", page)
+                .queryParam("size", size)
                 .build(false);
 
         HttpHeaders httpHeaders = new HttpHeaders();
