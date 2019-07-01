@@ -1,6 +1,8 @@
 package com.beingapple.webservice.auth.ajax;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,10 +11,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
 @Component
 public class AjaxAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private AjaxUserDetailsService userDetailService;
 
     @Override

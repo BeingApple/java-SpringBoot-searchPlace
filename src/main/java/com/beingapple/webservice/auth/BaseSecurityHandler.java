@@ -20,7 +20,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 @Component
-@Slf4j
 public class BaseSecurityHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {

@@ -1,6 +1,7 @@
 package com.beingapple.webservice.config;
 
 import com.beingapple.webservice.auth.BaseSecurityHandler;
+import com.beingapple.webservice.auth.ajax.AjaxUserDetailsService;
 import com.beingapple.webservice.auth.ajax.filter.AjaxAuthenticationFilter;
 import com.beingapple.webservice.auth.jwt.JwtAuthenticationProvider;
 import com.beingapple.webservice.auth.jwt.filter.JwtAuthenticationFilter;
@@ -8,6 +9,7 @@ import com.beingapple.webservice.auth.ajax.AjaxAuthenticationProvider;
 import com.beingapple.webservice.auth.jwt.matcher.SkipPathRequestMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,21 +20,28 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Arrays;
 
-@AllArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
     private JwtAuthenticationProvider jwtProvider;
+
+    @Autowired
     private AjaxAuthenticationProvider ajaxProvider;
+
+    @Autowired
     private BaseSecurityHandler securityHandler;
 
+    @Autowired
     private ObjectMapper objectMapper;
 
     private static final String LOGIN_ENTRY_POINT = "/login";

@@ -1,7 +1,7 @@
 package com.beingapple.webservice.auth.jwt;
 
 import com.beingapple.webservice.util.JwtUtil;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
 public class JwtAuthenticationProvider implements AuthenticationProvider {
+    @Autowired
     private JwtUserDetailsService userDetailsService;
 
     @Override

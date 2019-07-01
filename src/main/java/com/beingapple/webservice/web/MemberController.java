@@ -17,12 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class MemberController {
     private MemberService memberService;
-    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/join")
     public ResponseEntity<Response> saveMember(@RequestBody MemberRequestDTO dto){
         if(!memberService.isExistMember(dto)) {
-            dto.setUserPassword(passwordEncoder.encode(dto.getUserPassword()));
             memberService.saveMember(dto);
 
             return new ResponseEntity<>(null, HttpStatus.CREATED);

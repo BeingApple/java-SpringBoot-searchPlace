@@ -3,16 +3,16 @@ package com.beingapple.webservice.auth.ajax;
 import com.beingapple.webservice.auth.UserDetailsImpl;
 import com.beingapple.webservice.domain.Member;
 import com.beingapple.webservice.repository.MemberRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
 @Component
 public class AjaxUserDetailsService implements UserDetailsService {
+    @Autowired
     private MemberRepository memberRepository;
 
     @Override
