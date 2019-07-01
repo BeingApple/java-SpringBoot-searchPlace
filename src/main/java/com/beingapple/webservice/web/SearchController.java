@@ -7,6 +7,8 @@ import com.beingapple.webservice.service.HistoryService;
 import com.beingapple.webservice.service.MemberService;
 import com.beingapple.webservice.service.PopularService;
 import com.beingapple.webservice.service.SearchService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,10 @@ public class SearchController {
     private HistoryService historyService;
     private PopularService popularService;
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Authorization header", required = true,
+                    dataType = "string", paramType = "header", defaultValue = "key")
+    })
     @GetMapping("/search/place")
     public ResponseEntity<?> searchPlace(@RequestParam("keyword") String keyword,
                                               @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size){
@@ -48,6 +54,10 @@ public class SearchController {
         }
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Authorization header", required = true,
+                    dataType = "string", paramType = "header", defaultValue = "key")
+    })
     @GetMapping("/search/popular")
     public ResponseEntity<List> getPopular(){
         return new ResponseEntity<>(popularService.getPopular(), HttpStatus.OK);

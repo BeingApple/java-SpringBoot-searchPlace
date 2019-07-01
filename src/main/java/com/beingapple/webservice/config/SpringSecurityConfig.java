@@ -1,14 +1,12 @@
 package com.beingapple.webservice.config;
 
 import com.beingapple.webservice.auth.BaseSecurityHandler;
-import com.beingapple.webservice.auth.ajax.AjaxUserDetailsService;
 import com.beingapple.webservice.auth.ajax.filter.AjaxAuthenticationFilter;
 import com.beingapple.webservice.auth.jwt.JwtAuthenticationProvider;
 import com.beingapple.webservice.auth.jwt.filter.JwtAuthenticationFilter;
 import com.beingapple.webservice.auth.ajax.AjaxAuthenticationProvider;
 import com.beingapple.webservice.auth.jwt.matcher.SkipPathRequestMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,13 +18,13 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Configuration
 @EnableWebSecurity
@@ -47,11 +45,19 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String LOGIN_ENTRY_POINT = "/login";
     private static final String JOIN_ENTRY_POINT = "/join";
     private static final String ERROR_ENTRY_POINT = "/error";
+    private static final String[] SWAGGER_ENTRY_POINT = {"/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**"};
 
 
     @Override
     public void configure(WebSecurity web){
-        web.ignoring().antMatchers("/resources/**");
+        web.ignoring().antMatchers("/resources/**")
+                .antMatchers(SWAGGER_ENTRY_POINT);
     }
 
     @Override
@@ -74,6 +80,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(JOIN_ENTRY_POINT).permitAll()
                 .antMatchers(LOGIN_ENTRY_POINT).permitAll()
                 .antMatchers(ERROR_ENTRY_POINT).permitAll()
+                .antMatchers(SWAGGER_ENTRY_POINT).permitAll()
                 .anyRequest()
                 .authenticated();
     }
@@ -94,7 +101,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SkipPathRequestMatcher skipPathRequestMatcher() {
-        return new SkipPathRequestMatcher(Arrays.asList(LOGIN_ENTRY_POINT, JOIN_ENTRY_POINT, ERROR_ENTRY_POINT));
+        List<String> pathList = new ArrayList<>();
+        for(String entryPoint : SWAGGER_ENTRY_POINT){
+            pathList.add(entryPoint);
+        }
+        pathList.add(LOGIN_ENTRY_POINT);
+        pathList.add(JOIN_ENTRY_POINT);
+        pathList.add(ERROR_ENTRY_POINT);
+
+        return new SkipPathRequestMatcher(pathList);
     }
 
     @Bean

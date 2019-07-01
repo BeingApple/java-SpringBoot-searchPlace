@@ -5,6 +5,8 @@ import com.beingapple.webservice.domain.Member;
 import com.beingapple.webservice.domain.Response;
 import com.beingapple.webservice.service.HistoryService;
 import com.beingapple.webservice.service.MemberService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -14,8 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @CrossOrigin
 @AllArgsConstructor
@@ -23,6 +23,10 @@ public class HistoryController {
     private MemberService memberService;
     HistoryService historyService;
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Authorization header", required = true,
+                    dataType = "string", paramType = "header", defaultValue = "key")
+    })
     @GetMapping("/history")
     public ResponseEntity<?> getHistory(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                            @RequestParam(value = "size", required = false, defaultValue = "15") Integer size){
