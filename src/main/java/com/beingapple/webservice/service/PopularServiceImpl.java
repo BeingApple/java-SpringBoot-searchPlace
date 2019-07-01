@@ -4,6 +4,7 @@ import com.beingapple.webservice.domain.Popular;
 import com.beingapple.webservice.domain.PopularRequestDTO;
 import com.beingapple.webservice.repository.PopularRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 public class PopularServiceImpl implements PopularService {
     private PopularRepository popularRepository;
 
+    @Async
     @Override
     public void savePopularKeyword(String keyword) {
         Popular popular = popularRepository.findFirstByKeyword(keyword);

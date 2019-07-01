@@ -5,8 +5,8 @@ import com.beingapple.webservice.domain.HistoryRequestDTO;
 import com.beingapple.webservice.repository.HistoryRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class HistoryServiceImpl implements HistoryService{
     private HistoryRepository historyRepository;
 
+    @Async
     @Override
     public void saveHistory(Long memberId, String keyword) {
         HistoryRequestDTO historyRequestDTO = new HistoryRequestDTO();
