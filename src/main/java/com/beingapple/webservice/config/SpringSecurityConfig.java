@@ -5,7 +5,7 @@ import com.beingapple.webservice.auth.ajax.filter.AjaxAuthenticationFilter;
 import com.beingapple.webservice.auth.jwt.JwtAuthenticationProvider;
 import com.beingapple.webservice.auth.jwt.filter.JwtAuthenticationFilter;
 import com.beingapple.webservice.auth.ajax.AjaxAuthenticationProvider;
-import com.beingapple.webservice.auth.jwt.matcher.SkipPathRequestMatcher;
+import com.beingapple.webservice.auth.jwt.matcher.AuthenticationPathRequestMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +21,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -42,9 +44,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static final String LOGIN_ENTRY_POINT = "/login";
-    private static final String JOIN_ENTRY_POINT = "/join";
-    private static final String ERROR_ENTRY_POINT = "/error";
+    private static final String LOGIN_ENTRY_POINT = "/api/login";
+    private static final String SEARCH_ENTRY_POINT = "/search/**";
+    private static final String HISTORY_ENTRY_POINT = "/history";
     private static final String[] SWAGGER_ENTRY_POINT = {"/v2/api-docs",
             "/configuration/ui",
             "/swagger-resources",
@@ -77,12 +79,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(JOIN_ENTRY_POINT).permitAll()
-                .antMatchers(LOGIN_ENTRY_POINT).permitAll()
-                .antMatchers(ERROR_ENTRY_POINT).permitAll()
-                .antMatchers(SWAGGER_ENTRY_POINT).permitAll()
-                .anyRequest()
-                .authenticated();
+                .antMatchers(SEARCH_ENTRY_POINT).authenticated()
+                .antMatchers(HISTORY_ENTRY_POINT).authenticated()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .anyRequest().permitAll()
+                .and().cors();
     }
 
     @Bean
@@ -100,21 +101,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public SkipPathRequestMatcher skipPathRequestMatcher() {
-        List<String> pathList = new ArrayList<>();
-        for(String entryPoint : SWAGGER_ENTRY_POINT){
-            pathList.add(entryPoint);
-        }
-        pathList.add(LOGIN_ENTRY_POINT);
-        pathList.add(JOIN_ENTRY_POINT);
-        pathList.add(ERROR_ENTRY_POINT);
-
-        return new SkipPathRequestMatcher(pathList);
+    public AuthenticationPathRequestMatcher authenticationPathRequestMatcher() {
+        return new AuthenticationPathRequestMatcher(Arrays.asList(SEARCH_ENTRY_POINT, HISTORY_ENTRY_POINT));
     }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(skipPathRequestMatcher());
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(authenticationPathRequestMatcher());
         filter.setAuthenticationManager(authenticationManager());
         filter.setAuthenticationFailureHandler(securityHandler);
         return filter;

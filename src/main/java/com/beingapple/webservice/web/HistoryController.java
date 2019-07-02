@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin
 @AllArgsConstructor
 public class HistoryController {
     private MemberService memberService;
@@ -27,7 +26,7 @@ public class HistoryController {
             @ApiImplicitParam(name = "Authorization", value = "Authorization header", required = true,
                     dataType = "string", paramType = "header", defaultValue = "key")
     })
-    @GetMapping("/history")
+    @GetMapping("/api/history")
     public ResponseEntity<?> getHistory(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                            @RequestParam(value = "size", required = false, defaultValue = "15") Integer size){
         Member member = memberService.authenticationMember();

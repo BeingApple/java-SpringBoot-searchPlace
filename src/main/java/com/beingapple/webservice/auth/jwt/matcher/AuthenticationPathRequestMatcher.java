@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SkipPathRequestMatcher implements RequestMatcher {
+public class AuthenticationPathRequestMatcher implements RequestMatcher {
     private OrRequestMatcher skipRequestMatcher;
 
-    public SkipPathRequestMatcher(List<String> skipPathList) {
+    public AuthenticationPathRequestMatcher(List<String> skipPathList) {
         if(!skipPathList.isEmpty()) {
             List<RequestMatcher> requestMatcherList = skipPathList.stream()
                     .map(AntPathRequestMatcher::new)
@@ -22,6 +22,6 @@ public class SkipPathRequestMatcher implements RequestMatcher {
 
     @Override
     public boolean matches(HttpServletRequest request) {
-        return !skipRequestMatcher.matches(request);
+        return skipRequestMatcher.matches(request);
     }
 }

@@ -33,6 +33,6 @@ public class AjaxAuthenticationFilter extends AbstractAuthenticationProcessingFi
     }
 
     private boolean isJson(HttpServletRequest request) {
-        return MediaType.APPLICATION_JSON_VALUE.equalsIgnoreCase(request.getContentType());
+        return MediaType.APPLICATION_JSON_UTF8_VALUE.equalsIgnoreCase(request.getContentType()) || MediaType.APPLICATION_JSON_VALUE.equalsIgnoreCase(request.getContentType());
     }
 }

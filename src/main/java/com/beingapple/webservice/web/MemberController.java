@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin
 @AllArgsConstructor
 public class MemberController {
     private MemberService memberService;
 
-    @PostMapping("/join")
+    @PostMapping("/api/join")
     public ResponseEntity<Response> saveMember(@RequestBody MemberRequestDTO dto){
         if(!memberService.isExistMember(dto)) {
             memberService.saveMember(dto);

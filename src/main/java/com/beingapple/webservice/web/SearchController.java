@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @AllArgsConstructor
 public class SearchController {
     private SearchService searchService;
@@ -32,7 +31,7 @@ public class SearchController {
             @ApiImplicitParam(name = "Authorization", value = "Authorization header", required = true,
                     dataType = "string", paramType = "header", defaultValue = "key")
     })
-    @GetMapping("/search/place")
+    @GetMapping("/api/search/place")
     public ResponseEntity<?> searchPlace(@RequestParam("keyword") String keyword,
                                               @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size){
         Member member = memberService.authenticationMember();
@@ -58,7 +57,7 @@ public class SearchController {
             @ApiImplicitParam(name = "Authorization", value = "Authorization header", required = true,
                     dataType = "string", paramType = "header", defaultValue = "key")
     })
-    @GetMapping("/search/popular")
+    @GetMapping("/api/search/popular")
     public ResponseEntity<List> getPopular(){
         return new ResponseEntity<>(popularService.getPopular(), HttpStatus.OK);
     }
