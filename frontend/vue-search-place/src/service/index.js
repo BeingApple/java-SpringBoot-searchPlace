@@ -27,9 +27,9 @@ export default {
       console.log(err)
     }
   },
-  async history () {
+  async history (page, size) {
     try {
-      const historyResponse = await searchAPI.history()
+      const historyResponse = await searchAPI.history(page, size)
       return historyResponse
     } catch (err) {
       console.log(err)

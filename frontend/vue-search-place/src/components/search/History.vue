@@ -3,7 +3,7 @@
     <h2 class="mt-2">검색 내역</h2>
     <p class="lead">
       <b-list-group class="mt-2">
-        <b-list-group-item v-if="!historyData.content" >검색 결과가 없습니다.</b-list-group-item>
+        <b-list-group-item v-if="(!historyData.content || historyData.content <= 0)" >검색 결과가 없습니다.</b-list-group-item>
         <b-list-group-item v-for="item in historyData.content" v-bind:key="item.id" >
           <p>{{item.keyword}}</p>
           <span>{{item.createdDate | moment("YYYY년 M월 d일 H:m:s ")}}</span>
@@ -11,7 +11,7 @@
       </b-list-group>
     </p>
 
-    <nav aria-label="Page navigation example" v-if="historyData.content">
+    <nav aria-label="Page navigation example" v-if="(historyData.content && historyData.content > 0)">
       <ul class="pagination">
         <li class="page-item">
           <a class="page-link" v-on:click.prevent="pageMove(1)" aria-label="Previous">
@@ -48,7 +48,7 @@ export default {
   methods: {
     async history () {
       try {
-        let historyResult = await service.history()
+        let historyResult = await service.history(this.page, this.size)
         if (historyResult.status === 200) {
           this.historyData = historyResult.data
           this.pageSize = historyResult.data.totalPages
@@ -56,6 +56,10 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    pageMove (pageNum) {
+      this.page = pageNum
+      this.history()
     }
   },
   created () {

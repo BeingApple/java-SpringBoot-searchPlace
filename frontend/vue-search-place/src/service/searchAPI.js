@@ -10,10 +10,14 @@ const getSearchData = (keyword, page, size) => {
   })
 }
 
-const getHistoryData = () => {
-  return axios.get('//localhost:8080/api/history')
+const getHistoryData = (page, size) => {
+  return axios.get('//localhost:8080/api/history', {
+    params: {
+      'page': page,
+      'size': size
+    }
+  })
 }
-
 const getPopularData = () => {
   return axios.get('//localhost:8080/api/search/popular')
 }
@@ -27,9 +31,9 @@ export default {
       console.log(err)
     }
   },
-  async history () {
+  async history (page, size) {
     try {
-      const historyData = await getHistoryData().then(function (response) { return response }).catch(function (error) { return error.response })
+      const historyData = await getHistoryData(page, size).then(function (response) { return response }).catch(function (error) { return error.response })
       return historyData
     } catch (err) {
       console.log(err)

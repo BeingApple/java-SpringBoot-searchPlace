@@ -30,10 +30,12 @@ public class MemberControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private void join(String userId, String userPassword) throws Exception{
+    private void join(String userName, String userId, String userPassword) throws Exception{
         MemberRequestDTO dto = new MemberRequestDTO();
+        dto.setUserName(userName);
         dto.setUserId(userId);
         dto.setUserPassword(userPassword);
+        dto.setUserPasswordCheck(userPassword);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -41,7 +43,7 @@ public class MemberControllerTest {
 
         String requestJson = ow.writeValueAsString(dto);
 
-        mockMvc.perform(post("/join")
+        mockMvc.perform(post("/api/join")
                 .content(requestJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -59,7 +61,7 @@ public class MemberControllerTest {
 
         String requestJson = ow.writeValueAsString(dto);
 
-        ResultActions result = mockMvc.perform(post("/login")
+        ResultActions result = mockMvc.perform(post("/api/login")
                     .content(requestJson)
                     .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -74,20 +76,23 @@ public class MemberControllerTest {
 
     @Test
     public void 회원가입_요청() throws Exception{
-        join("beingapple", "beingapple123");
+        join("조용비", "beingapple", "beingapple123");
     }
 
     @Test
     public void 회원가입_아이디_중복() throws Exception{
+        String userName = "조용비";
         String userId = "beingapple";
         String userPassword = "beingapple123";
 
         //중복데이터 생성
-        join(userId, userPassword);
+        join(userName, userId, userPassword);
 
         MemberRequestDTO dto = new MemberRequestDTO();
+        dto.setUserName(userName);
         dto.setUserId(userId);
         dto.setUserPassword(userPassword);
+        dto.setUserPasswordCheck(userPassword);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -96,7 +101,7 @@ public class MemberControllerTest {
         String requestJson = ow.writeValueAsString(dto);
 
         //중복 요청
-        mockMvc.perform(post("/join")
+        mockMvc.perform(post("/api/join")
                 .content(requestJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -108,7 +113,7 @@ public class MemberControllerTest {
         String userId = "beingapple";
         String userPassword = "beingapple123";
 
-        join(userId, userPassword);
+        join("조용비", userId, userPassword);
         login(userId, userPassword);
     }
 }

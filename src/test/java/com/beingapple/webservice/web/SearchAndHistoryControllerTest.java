@@ -36,10 +36,12 @@ public class SearchAndHistoryControllerTest {
 
     private String token = "";
 
-    private void join(String userId, String userPassword) throws Exception{
+    private void join(String userName, String userId, String userPassword) throws Exception{
         MemberRequestDTO dto = new MemberRequestDTO();
+        dto.setUserName(userName);
         dto.setUserId(userId);
         dto.setUserPassword(userPassword);
+        dto.setUserPasswordCheck(userPassword);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -47,7 +49,7 @@ public class SearchAndHistoryControllerTest {
 
         String requestJson = ow.writeValueAsString(dto);
 
-        mockMvc.perform(post("/join")
+        mockMvc.perform(post("/api/join")
                     .content(requestJson)
                     .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -65,7 +67,7 @@ public class SearchAndHistoryControllerTest {
 
         String requestJson = ow.writeValueAsString(dto);
 
-        ResultActions result = mockMvc.perform(post("/login")
+        ResultActions result = mockMvc.perform(post("/api/login")
                     .content(requestJson)
                     .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -83,7 +85,7 @@ public class SearchAndHistoryControllerTest {
         String userId = "beingapple";
         String userPassword = "beingapple123";
 
-        join(userId, userPassword);
+        join("조용비", userId, userPassword);
         token = login(userId, userPassword);
     }
 
@@ -94,7 +96,7 @@ public class SearchAndHistoryControllerTest {
 
     @Test
     public void 검색하기() throws Exception{
-        mockMvc.perform(get("/search/place")
+        mockMvc.perform(get("/api/search/place")
                     .header("Authorization", token)
                     .param("keyword", "사가정역 맛집"))
                 .andDo(print())
@@ -105,7 +107,7 @@ public class SearchAndHistoryControllerTest {
 
     @Test
     public void 히스토리_가져오기() throws Exception{
-        mockMvc.perform(get("/history")
+        mockMvc.perform(get("/api/history")
                     .header("Authorization", token))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -113,7 +115,7 @@ public class SearchAndHistoryControllerTest {
 
     @Test
     public void 인기목록_가져오기() throws Exception{
-        mockMvc.perform(get("/search/popular")
+        mockMvc.perform(get("/api/search/popular")
                     .header("Authorization", token))
                 .andDo(print())
                 .andExpect(status().isOk())
