@@ -45,8 +45,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private ObjectMapper objectMapper;
 
     private static final String LOGIN_ENTRY_POINT = "/api/login";
-    private static final String SEARCH_ENTRY_POINT = "/search/**";
-    private static final String HISTORY_ENTRY_POINT = "/history";
+    private static final String SEARCH_ENTRY_POINT = "/api/search/**";
+    private static final String HISTORY_ENTRY_POINT = "/api/history";
     private static final String[] SWAGGER_ENTRY_POINT = {"/v2/api-docs",
             "/configuration/ui",
             "/swagger-resources",

@@ -8,12 +8,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MemberRequestDTO {
+    private String userName;
     private String userId;
     private String userPassword;
+    private String userPasswordCheck;
     private String role;
 
     public Member toEntity(){
         return Member.builder()
+                .userName(userName)
                 .userId(userId)
                 .userPassword(userPassword)
                 .role("USER")

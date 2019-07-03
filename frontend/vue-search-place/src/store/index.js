@@ -9,7 +9,8 @@ Vue.use(Vuex)
 const state = {
   errorState: '',
   isAuth: false,
-  accessToken: null
+  accessToken: null,
+  searchData: {}
 }
 
 export default new Vuex.Store({

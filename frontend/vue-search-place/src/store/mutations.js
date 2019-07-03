@@ -9,5 +9,8 @@ export default {
   },
   [types.ACCESS_TOKEN] (state, accessToken) {
     state.accessToken = accessToken
+  },
+  [types.SEARCH_DATA] (state, searchData) {
+    state.searchData = searchData
   }
 }

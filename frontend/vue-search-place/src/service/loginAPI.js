@@ -10,9 +10,8 @@ const getAccessToken = (userId, userPassword) => {
 export default {
   async login (userId, userPassword) {
     try {
-      const getAccessTokenPromise = await getAccessToken(userId, userPassword)
-      const accessTokenResponse = await Promise.all(getAccessTokenPromise)
-      if (accessTokenResponse.status === 200) axios.defaults.headers.common['Authorization'] = accessTokenResponse.message
+      const accessTokenResponse = await getAccessToken(userId, userPassword).then(function (response) { return response }).catch(function (error) { return error.response })
+      if (accessTokenResponse.status === 200) axios.defaults.headers.common['Authorization'] = accessTokenResponse.data.message
       return accessTokenResponse
     } catch (err) {
       console.log(err)

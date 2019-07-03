@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrap">
     <form class="form-signin" v-on:submit.prevent="onSubmit">
       <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt width="72" height="72" />
 
@@ -52,6 +52,10 @@
 
       <button class="btn btn-lg btn-primary btn-block" type="submit">회원가입</button>
 
+      <p>
+        <router-link to="/login">이미 회원이신가요?</router-link>
+      </p>
+
       <p class="text-center mt-5 mb-3 text-muted">&copy;BeingApple</p>
     </form>
   </div>
@@ -74,16 +78,19 @@ export default {
     ...mapActions(['join']),
     async onSubmit () {
       try {
-        let joinResult = await this.join({userId: this.userId, userPassword: this.userPassword, check: this.userPasswordCheck})
+        let joinResult = await this.join({
+          userName: this.userName,
+          userId: this.userId,
+          userPassword: this.userPassword,
+          userPasswordCheck: this.userPasswordCheck
+        })
         if (joinResult) this.goToPages()
       } catch (err) {
         console.log(err)
       }
     },
     goToPages () {
-      this.$router.push({
-        name: 'login'
-      })
+      this.$router.push('/login')
     }
   },
   computed: {
@@ -95,12 +102,8 @@ export default {
 </script>
 
 <style scoped>
-html,
-body {
+.wrap {
   height: 100%;
-}
-
-body {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;

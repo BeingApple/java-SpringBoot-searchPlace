@@ -1,4 +1,4 @@
-import {ERROR_STATE, IS_AUTH, ACCESS_TOKEN} from './mutation_types'
+import {ERROR_STATE, IS_AUTH, ACCESS_TOKEN, SEARCH_DATA} from './mutation_types'
 import api from '../service'
 
 let setErrorState = ({commit}, data) => {
@@ -13,9 +13,13 @@ let setAccessToken = ({commit}, data) => {
   commit(ACCESS_TOKEN, data)
 }
 
+let setSearchData = ({commit}, data) => {
+  commit(SEARCH_DATA, data)
+}
+
 let processResponse = (store, loginResponse) => {
-  let status = loginResponse.response.status
-  let responseData = loginResponse.response.data
+  let status = loginResponse.status
+  let responseData = loginResponse.data
   switch (status) {
     case 200 :
       setErrorState(store, '')
@@ -31,14 +35,19 @@ let processResponse = (store, loginResponse) => {
 }
 
 let processJoinResponse = (store, joinResponse) => {
-  let status = joinResponse.response.status
+  let status = joinResponse.status
+  let data = joinResponse.data
   switch (status) {
     case 201 :
       setErrorState(store, '')
       setIsAuth(store, true)
       break
+    case 400 :
+      setErrorState(store, data.errorMessage)
+      setIsAuth(store, false)
+      break
     case 409 :
-      setErrorState(store, '중복된 유저아이디입니다.')
+      setErrorState(store, data.errorMessage)
       setIsAuth(store, false)
       break
   }
@@ -50,9 +59,12 @@ export default {
     processResponse(store, loginResponse)
     return store.getters.getIsAuth
   },
-  async join (store, {userId, userPassword, check}) {
-    let joinResponse = await api.join(userId, userPassword, check)
+  async join (store, {userName, userId, userPassword, userPasswordCheck}) {
+    let joinResponse = await api.join(userName, userId, userPassword, userPasswordCheck)
     processJoinResponse(store, joinResponse)
     return store.getters.getIsAuth
+  },
+  async setData (store, data) {
+    await setSearchData(store, data)
   }
 }

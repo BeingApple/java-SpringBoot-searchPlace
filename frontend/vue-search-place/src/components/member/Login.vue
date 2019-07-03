@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
+  <div class="wrap text-center">
     <form class="form-signin" v-on:submit.prevent="onSubmit">
       <h1 class="h3 mb-3 font-weight-normal">로그인이 필요합니다.</h1>
       <div class="alert alert-danger" role="alert" v-if="errorState" >{{errorState}}</div>
@@ -45,9 +45,7 @@ export default {
       }
     },
     goToPages () {
-      this.$router.push({
-        name: 'search'
-      })
+      this.$router.push('/search')
     }
   },
   computed: {
@@ -59,12 +57,8 @@ export default {
 </script>
 
 <style scoped>
-html,
-body {
+.wrap {
   height: 100%;
-}
-
-body {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;

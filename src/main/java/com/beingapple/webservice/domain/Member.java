@@ -18,6 +18,9 @@ public class Member extends BaseTimeEntity{
     @GeneratedValue
     private Long id;
 
+    @Column(length=  50, nullable = false)
+    private String userName;
+
     @Column(length=  100, nullable = false)
     private String userId;
 
@@ -28,7 +31,8 @@ public class Member extends BaseTimeEntity{
     private String role;
 
     @Builder
-    public Member(String userId, String userPassword, String role){
+    public Member(String userName, String userId, String userPassword, String role){
+        this.userName = userName;
         this.userId = userId;
         this.userPassword = userPassword;
         this.role = role;

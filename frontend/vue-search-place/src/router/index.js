@@ -12,7 +12,7 @@ import Popular from '@/components/search/Popular'
 Vue.use(Router)
 
 const requireAuth = () => (from, to, next) => {
-  if (store.getters.getIsAuth) return next()
+  if (store.getters.getIsAuth) { return next() }
   next('/login')
 }
 
@@ -33,25 +33,25 @@ export default new Router({
       path: '/search',
       name: 'Search',
       component: Search,
-      beforeEnter: requireAuth
+      beforeEnter: requireAuth()
     },
     {
       path: '/search/:id',
       name: 'SearchView',
       component: SearchView,
-      beforeEnter: requireAuth
+      beforeEnter: requireAuth()
     },
     {
       path: '/history',
       name: 'History',
       component: History,
-      beforeEnter: requireAuth
+      beforeEnter: requireAuth()
     },
     {
       path: '/popular',
       name: 'Popular',
       component: Popular,
-      beforeEnter: requireAuth
+      beforeEnter: requireAuth()
     }
   ]
 })

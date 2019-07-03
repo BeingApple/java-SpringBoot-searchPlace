@@ -1,21 +1,21 @@
 import axios from 'axios'
 
-const getJoin = (userId, userPassword, check) => {
+const getJoin = (userName, userId, userPassword, userPasswordCheck) => {
   return axios.post('//localhost:8080/api/join', {
+    'userName': userName,
     'userId': userId,
     'userPassword': userPassword,
-    'check': check
+    'userPasswordCheck': userPasswordCheck
   })
 }
 
 export default {
-  async join (userId, userPassword, check) {
+  async join (userName, userId, userPassword, userPasswordCheck) {
     try {
-      const getJoinPromise = await getJoin(userId, userPassword, check)
-      const joinResponse = await Promise.all(getJoinPromise)
+      const joinResponse = await getJoin(userName, userId, userPassword, userPasswordCheck).then(function (response) { return response }).catch(function (error) { return error.response })
       return joinResponse
     } catch (err) {
-      console.log(err.response)
+      console.log(err)
     }
   }
 }
