@@ -3,5 +3,6 @@ export default {
   getIsAuth: state => state.isAuth,
   getAccessToken: state => state.accessToken,
   getSearchData: state => state.searchData,
-  getKeyword: state => state.keyword
+  getKeyword: state => state.keyword,
+  getSearchViewBack: state => state.searchViewBack
 }

@@ -15,5 +15,8 @@ export default {
   },
   [types.KEYWORD] (state, keyword) {
     state.keyword = keyword
+  },
+  [types.SEARCH_VIEW_BACK] (state, searchViewBack) {
+    state.searchViewBack = searchViewBack
   }
 }

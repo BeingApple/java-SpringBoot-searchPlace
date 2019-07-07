@@ -11,7 +11,8 @@ const state = {
   isAuth: false,
   accessToken: null,
   searchData: {},
-  keyword: ''
+  keyword: '',
+  searchViewBack: false
 }
 
 export default new Vuex.Store({

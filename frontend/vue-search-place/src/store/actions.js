@@ -1,4 +1,4 @@
-import {ERROR_STATE, IS_AUTH, ACCESS_TOKEN, SEARCH_DATA, KEYWORD} from './mutation_types'
+import {ERROR_STATE, IS_AUTH, ACCESS_TOKEN, SEARCH_DATA, KEYWORD, SEARCH_VIEW_BACK} from './mutation_types'
 import api from '../service'
 
 let setErrorState = ({commit}, data) => {
@@ -19,6 +19,10 @@ let setSearchData = ({commit}, data) => {
 
 let setKeyword = ({commit}, data) => {
   commit(KEYWORD, data)
+}
+
+let setSearchViewBack = ({commit}, data) => {
+  commit(SEARCH_VIEW_BACK, data)
 }
 
 let processResponse = (store, loginResponse) => {
@@ -73,5 +77,8 @@ export default {
   },
   setKeyword (store, keyword) {
     setKeyword(store, keyword)
+  },
+  setSearchViewBack (store, searchViewBack) {
+    setSearchViewBack(store, searchViewBack)
   }
 }

@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setData', 'setKeyword']),
+    ...mapActions(['setData', 'setKeyword', 'setSearchViewBack']),
     async search (reset) {
       if (reset) this.page = 1
 
@@ -92,11 +92,12 @@ export default {
     }
   },
   mounted () {
-    if (this.saveKeyword !== '') {
+    if (this.saveKeyword !== '' && this.getBack) {
       this.keyword = this.saveKeyword
-      this.setKeyword('')
       this.search(true)
     }
+    this.setKeyword('')
+    this.setSearchViewBack(false)
   },
   computed: {
     pageSize: function () {
@@ -120,7 +121,8 @@ export default {
       return list
     },
     ...mapGetters({
-      saveKeyword: 'getKeyword'
+      saveKeyword: 'getKeyword',
+      getBack: 'getSearchViewBack'
     })
   }
 }

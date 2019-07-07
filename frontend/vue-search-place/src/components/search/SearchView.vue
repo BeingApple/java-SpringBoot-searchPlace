@@ -16,6 +16,7 @@
 
 <script>
 import store from '@/store'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'SearchView',
@@ -25,6 +26,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setSearchViewBack']),
     makeLatLng () {
       return new window.daum.maps.LatLng(this.detail.y, this.detail.x)
     },
@@ -52,6 +54,8 @@ export default {
     }
   },
   mounted () {
+    this.setSearchViewBack(true)
+
     let self = this
     window.daum.maps.load(() => {
       let container = document.getElementById('map') // 지도를 담을 영역의 DOM 레퍼런스
