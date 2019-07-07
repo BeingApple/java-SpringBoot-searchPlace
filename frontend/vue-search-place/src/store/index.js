@@ -10,7 +10,8 @@ const state = {
   errorState: '',
   isAuth: false,
   accessToken: null,
-  searchData: {}
+  searchData: {},
+  keyword: ''
 }
 
 export default new Vuex.Store({

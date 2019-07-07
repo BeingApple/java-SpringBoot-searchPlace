@@ -12,5 +12,8 @@ export default {
   },
   [types.SEARCH_DATA] (state, searchData) {
     state.searchData = searchData
+  },
+  [types.KEYWORD] (state, keyword) {
+    state.keyword = keyword
   }
 }

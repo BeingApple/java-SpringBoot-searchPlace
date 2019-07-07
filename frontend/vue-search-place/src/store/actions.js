@@ -1,4 +1,4 @@
-import {ERROR_STATE, IS_AUTH, ACCESS_TOKEN, SEARCH_DATA} from './mutation_types'
+import {ERROR_STATE, IS_AUTH, ACCESS_TOKEN, SEARCH_DATA, KEYWORD} from './mutation_types'
 import api from '../service'
 
 let setErrorState = ({commit}, data) => {
@@ -15,6 +15,10 @@ let setAccessToken = ({commit}, data) => {
 
 let setSearchData = ({commit}, data) => {
   commit(SEARCH_DATA, data)
+}
+
+let setKeyword = ({commit}, data) => {
+  commit(KEYWORD, data)
 }
 
 let processResponse = (store, loginResponse) => {
@@ -66,5 +70,8 @@ export default {
   },
   async setData (store, data) {
     await setSearchData(store, data)
+  },
+  setKeyword (store, keyword) {
+    setKeyword(store, keyword)
   }
 }

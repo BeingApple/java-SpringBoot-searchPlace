@@ -38,7 +38,7 @@
 
 <script>
 import service from '@/service'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Search',
@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setData']),
+    ...mapActions(['setData', 'setKeyword']),
     async search (reset) {
       if (reset) this.page = 1
 
@@ -84,8 +84,18 @@ export default {
       return list
     },
     async move (id, index) {
+      // vuex action
       await this.setData(this.searchList.documents[index])
+      this.setKeyword(this.keyword)
+
       this.$router.push('/search/' + id)
+    }
+  },
+  mounted () {
+    if (this.saveKeyword !== '') {
+      this.keyword = this.saveKeyword
+      this.setKeyword('')
+      this.search(true)
     }
   },
   computed: {
@@ -108,7 +118,10 @@ export default {
         for (let i = 1; i <= this.pageSize; i++) list.push(i)
       }
       return list
-    }
+    },
+    ...mapGetters({
+      saveKeyword: 'getKeyword'
+    })
   }
 }
 </script>
