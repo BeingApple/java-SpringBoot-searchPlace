@@ -3,7 +3,7 @@
     <h2 class="mt-2">검색 내역</h2>
     <p class="lead">
       <b-list-group class="mt-2">
-        <b-list-group-item v-if="(!historyData.content || historyData.content <= 0)" >검색 결과가 없습니다.</b-list-group-item>
+        <b-list-group-item v-if="(!historyData.content || historyData.content.length <= 0)" >검색 결과가 없습니다.</b-list-group-item>
         <b-list-group-item v-for="item in historyData.content" v-bind:key="item.id" >
           <p>{{item.keyword}}</p>
           <span>{{item.createdDate | moment("YYYY년 M월 d일 H:m:s ")}}</span>

@@ -40,7 +40,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #navbarCollapse{ width: 100%; }
 .router-link-active{ color: #ffffff!important; }
 main > .container { padding: 30px 15px 0; }

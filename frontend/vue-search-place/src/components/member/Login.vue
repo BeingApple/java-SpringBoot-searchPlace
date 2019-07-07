@@ -18,6 +18,10 @@
 
       <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
 
+      <p>
+        <router-link to="/">회원가입</router-link>
+      </p>
+
       <p class="mt-5 mb-3 text-muted">&copy;BeingApple</p>
     </form>
   </div>
