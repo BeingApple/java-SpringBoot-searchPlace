@@ -10,6 +10,7 @@ import com.beingapple.webservice.service.SearchService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,17 +22,17 @@ import java.util.List;
 @RestController
 @NoArgsConstructor
 public class SearchController {
+    @Autowired
     private SearchService searchService;
-    private MemberService memberService;
-    private HistoryService historyService;
-    private PopularService popularService;
 
-    public SearchController(SearchService searchService, MemberService memberService, HistoryService historyService, PopularService popularService) {
-        this.searchService = searchService;
-        this.memberService = memberService;
-        this.historyService = historyService;
-        this.popularService = popularService;
-    }
+    @Autowired
+    private MemberService memberService;
+
+    @Autowired
+    private HistoryService historyService;
+
+    @Autowired
+    private PopularService popularService;
 
     private String nowKeyword;
 
