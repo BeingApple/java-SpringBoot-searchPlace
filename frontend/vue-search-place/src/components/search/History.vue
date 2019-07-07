@@ -11,7 +11,7 @@
       </b-list-group>
     </p>
 
-    <nav aria-label="Page navigation example" v-if="(historyData.content && historyData.content > 0)">
+    <nav aria-label="Page navigation example" v-if="(historyData.content && historyData.content.length > 0)">
       <ul class="pagination">
         <li class="page-item">
           <a class="page-link" v-on:click.prevent="pageMove(1)" aria-label="Previous">
@@ -19,7 +19,7 @@
           </a>
         </li>
 
-        <li class="page-item" v-for="pageNumber in pageList" v-bind:key="pageNumber" ><a class="page-link" v-on:click.prevent="pageMove(pageNumber)">{{pageNumber}}</a></li>
+        <li class="page-item" v-bind:class="nowPageActive(pageNumber)" v-for="pageNumber in pageList" v-bind:key="pageNumber" ><a class="page-link" v-on:click.prevent="pageMove(pageNumber)">{{pageNumber}}</a></li>
 
         <li class="page-item">
           <a class="page-link" v-on:click.prevent="pageMove(pageSize)" aria-label="Next">
@@ -60,6 +60,14 @@ export default {
     pageMove (pageNum) {
       this.page = pageNum
       this.history()
+    },
+    nowPageActive (nowPage) {
+      let list = []
+      if (nowPage === this.page) {
+        list.push('active')
+      }
+
+      return list
     }
   },
   created () {

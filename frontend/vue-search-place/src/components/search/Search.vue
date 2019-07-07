@@ -3,7 +3,7 @@
     <h2 class="mt-2">장소 검색</h2>
     <p class="lead">
       <b-input-group prepend="키워드" class="mt-3">
-        <b-form-input v-model="keyword" ></b-form-input>
+        <b-form-input v-model="keyword" v-on:keyup.enter="search(true)"></b-form-input>
         <b-input-group-append>
           <b-button variant="info" v-on:click.prevent="search(true)">검색</b-button>
         </b-input-group-append>
@@ -24,7 +24,7 @@
           </a>
         </li>
 
-        <li class="page-item" v-for="pageNumber in pageList" v-bind:key="pageNumber" ><a class="page-link" v-on:click.prevent="pageMove(pageNumber)">{{pageNumber}}</a></li>
+        <li class="page-item" v-bind:class="nowPageActive(pageNumber)" v-for="pageNumber in pageList" v-bind:key="pageNumber" ><a class="page-link" v-on:click.prevent="pageMove(pageNumber)">{{pageNumber}}</a></li>
 
         <li class="page-item">
           <a class="page-link" v-on:click.prevent="pageMove(pageSize)" aria-label="Next">
@@ -45,7 +45,9 @@ export default {
   data () {
     return {
       keyword: '',
+      nowKeyword: '',
       page: 1,
+      nowPage: 1,
       size: 15,
       perPage: 5,
       searchList: []
@@ -55,18 +57,31 @@ export default {
     ...mapActions(['setData']),
     async search (reset) {
       if (reset) this.page = 1
-      try {
-        let searchResult = await service.search(this.keyword, this.page, this.size)
-        if (searchResult.status === 200) {
-          this.searchList = searchResult.data
+
+      if (this.page !== this.nowPage || this.nowKeyword !== this.keyword) {
+        try {
+          let searchResult = await service.search(this.keyword, this.page, this.size)
+          if (searchResult.status === 200) {
+            this.nowKeyword = this.keyword
+            this.nowPage = this.page
+            this.searchList = searchResult.data
+          }
+        } catch (err) {
+          console.log(err)
         }
-      } catch (err) {
-        console.log(err)
       }
     },
     pageMove (pageNum) {
       this.page = pageNum
       this.search(false)
+    },
+    nowPageActive (nowPage) {
+      let list = []
+      if (nowPage === this.page) {
+        list.push('active')
+      }
+
+      return list
     },
     async move (id, index) {
       await this.setData(this.searchList.documents[index])
