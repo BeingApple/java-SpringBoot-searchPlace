@@ -9,10 +9,9 @@ import com.beingapple.webservice.service.PopularService;
 import com.beingapple.webservice.service.SearchService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,12 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@NoArgsConstructor
 public class SearchController {
     private SearchService searchService;
     private MemberService memberService;
     private HistoryService historyService;
     private PopularService popularService;
+
+    public SearchController(SearchService searchService, MemberService memberService, HistoryService historyService, PopularService popularService) {
+        this.searchService = searchService;
+        this.memberService = memberService;
+        this.historyService = historyService;
+        this.popularService = popularService;
+    }
+
+    private String nowKeyword;
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "Authorization header", required = true,
@@ -39,8 +47,11 @@ public class SearchController {
         if(member != null) {
             Search search = searchService.findByKeyword(keyword, page, size);
 
-            historyService.saveHistory(member.getId(), keyword);
-            popularService.savePopularKeyword(keyword);
+            if(!keyword.equals(nowKeyword)) {
+                historyService.saveHistory(member.getId(), keyword);
+                popularService.savePopularKeyword(keyword);
+            }
+            nowKeyword = keyword;
 
             return new ResponseEntity<>(search, HttpStatus.OK);
         }else{
