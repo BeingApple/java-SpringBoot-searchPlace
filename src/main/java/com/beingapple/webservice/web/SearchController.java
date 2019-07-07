@@ -9,8 +9,7 @@ import com.beingapple.webservice.service.PopularService;
 import com.beingapple.webservice.service.SearchService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,21 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@NoArgsConstructor
+@AllArgsConstructor
 public class SearchController {
-    @Autowired
     private SearchService searchService;
-
-    @Autowired
     private MemberService memberService;
-
-    @Autowired
     private HistoryService historyService;
-
-    @Autowired
     private PopularService popularService;
-
-    private String nowKeyword;
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "Authorization header", required = true,
@@ -48,11 +38,8 @@ public class SearchController {
         if(member != null) {
             Search search = searchService.findByKeyword(keyword, page, size);
 
-            if(!keyword.equals(nowKeyword)) {
-                historyService.saveHistory(member.getId(), keyword);
-                popularService.savePopularKeyword(keyword);
-            }
-            nowKeyword = keyword;
+            historyService.saveHistory(member.getId(), keyword);
+            popularService.savePopularKeyword(keyword);
 
             return new ResponseEntity<>(search, HttpStatus.OK);
         }else{
