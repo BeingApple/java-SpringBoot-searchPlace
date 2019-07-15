@@ -1,8 +1,6 @@
 package com.beingapple.webservice.web;
 
-import com.beingapple.webservice.domain.Member;
-import com.beingapple.webservice.domain.Response;
-import com.beingapple.webservice.domain.Search;
+import com.beingapple.webservice.domain.*;
 import com.beingapple.webservice.service.HistoryService;
 import com.beingapple.webservice.service.MemberService;
 import com.beingapple.webservice.service.PopularService;
@@ -20,7 +18,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-public class SearchController {
+public class SearchController extends CommonController{
     private SearchService searchService;
     private MemberService memberService;
     private HistoryService historyService;
@@ -33,22 +31,21 @@ public class SearchController {
     @GetMapping("/api/search/place")
     public ResponseEntity<?> searchPlace(@RequestParam("keyword") String keyword,
                                               @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size){
-        Member member = memberService.authenticationMember();
+        Long memberId = memberService.getAuthenticationMember()
+                .map(Member::getId)
+                .orElse(0L);
 
-        if(member != null) {
+        if(memberId > 0) {
             Search search = searchService.findByKeyword(keyword, page, size);
+            History saveData = historyService.makeSearchHistoryEntity(memberId, keyword);
 
-            historyService.saveHistory(member.getId(), keyword);
+            //비동기 처리
+            historyService.saveSearchHistory(saveData);
             popularService.savePopularKeyword(keyword);
 
             return new ResponseEntity<>(search, HttpStatus.OK);
         }else{
-            Response response = new Response(
-                    HttpStatus.UNAUTHORIZED.toString(),
-                    "",
-                    "MEMBER", "토큰값에 해당하는 멤버가 존재하지 않습니다."
-            );
-            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            return returnResponseObjectWithHttpStatus(HttpStatus.UNAUTHORIZED, "", "MEMBER", "토큰값에 해당하는 멤버가 존재하지 않습니다.");
         }
     }
 
@@ -57,7 +54,8 @@ public class SearchController {
                     dataType = "string", paramType = "header", defaultValue = "key")
     })
     @GetMapping("/api/search/popular")
-    public ResponseEntity<List> getPopular(){
-        return new ResponseEntity<>(popularService.getPopular(), HttpStatus.OK);
+    public ResponseEntity<?> getPopular(){
+        List<Popular> popularList = popularService.getPopularList();
+        return new ResponseEntity<>(popularList, HttpStatus.OK);
     }
 }

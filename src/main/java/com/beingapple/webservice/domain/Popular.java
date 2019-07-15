@@ -30,14 +30,4 @@ public class Popular extends BaseTimeEntity{
         this.keyword = keyword;
         this.count = count;
     }
-
-    public PopularRequestDTO getModifyDto(){
-        PopularRequestDTO dto = new PopularRequestDTO();
-        dto.setId(id);
-        dto.setKeyword(keyword);
-        dto.setCount(count);
-
-        return dto;
-    }
-
 }

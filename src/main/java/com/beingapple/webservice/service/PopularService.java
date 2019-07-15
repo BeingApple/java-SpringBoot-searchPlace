@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PopularService {
     void savePopularKeyword(String keyword);
-    List<Popular> getPopular();
+    List<Popular> getPopularList();
 }
